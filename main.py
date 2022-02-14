@@ -1,20 +1,11 @@
-
-"""
-Simple Bot to reply to Telegram messages.
-First, a few handler functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Basic Echobot example, repeats messages.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
 import os
 import logging
 
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+
+from dialogflow_answer import detect_intent_texts
 
 
 logging.basicConfig(
@@ -26,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 
-def start(update: Update, context: CallbackContext) -> None:
+def start(update: Update, context: CallbackContext):
     """Send a message when the command /start is issued."""
     user = update.effective_user
     update.message.reply_markdown_v2(
@@ -35,19 +26,25 @@ def start(update: Update, context: CallbackContext) -> None:
     )
 
 
-def help_command(update: Update, context: CallbackContext) -> None:
+def help_command(update: Update, context: CallbackContext):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
 
 
-def echo(update: Update, context: CallbackContext) -> None:
+def echo(update: Update, context: CallbackContext):
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
+    project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
+    language_code = 'ru-RU'
+    user_id = update.effective_user.id
+    user_answer = update.message.text
+    dialogflow_answer = detect_intent_texts(project_id, user_id, user_answer, language_code)
+    update.message.reply_text(dialogflow_answer)
 
 
-def main() -> None:
+def main():
     """Start the bot."""
     load_dotenv()
+    credentials_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
     bot_token = os.environ['TG_BOT_TOKEN']
     updater = Updater(bot_token)
     dispatcher = updater.dispatcher

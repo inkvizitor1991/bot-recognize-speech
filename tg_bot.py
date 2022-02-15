@@ -29,12 +29,12 @@ def help_command(update: Update, context: CallbackContext):
     update.message.reply_text('Help!')
 
 
-def echo(update: Update, context: CallbackContext):
+def answer_questions(update: Update, context: CallbackContext):
     project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
     language_code = 'ru-RU'
     user_id = update.effective_user.id
-    user_answer = update.message.text
-    dialogflow_answer = detect_intent_texts(project_id, user_id, user_answer, language_code)
+    user_question = update.message.text
+    dialogflow_answer = detect_intent_texts(project_id, user_id, user_question, language_code)
     update.message.reply_text(dialogflow_answer)
 
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, answer_questions))
     updater.start_polling()
     updater.idle()
 

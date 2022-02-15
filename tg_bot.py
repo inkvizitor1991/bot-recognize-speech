@@ -3,10 +3,13 @@ import logging
 
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import (
+    Updater, CommandHandler,
+    MessageHandler, Filters,
+    CallbackContext
+)
 
 from dialogflow_answer import detect_intent_texts
-
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -14,7 +17,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
 
 
 def start(update: Update, context: CallbackContext):
@@ -34,8 +36,11 @@ def answer_questions(update: Update, context: CallbackContext):
     language_code = 'ru-RU'
     user_id = update.effective_user.id
     user_question = update.message.text
-    dialogflow_answer = detect_intent_texts(project_id, user_id, user_question, language_code)
-    update.message.reply_text(dialogflow_answer)
+    response = detect_intent_texts(
+        project_id, user_id,
+        user_question, language_code
+    )
+    update.message.reply_text(response.query_result.fulfillment_text)
 
 
 if __name__ == '__main__':
@@ -46,10 +51,8 @@ if __name__ == '__main__':
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, answer_questions))
+    dispatcher.add_handler(
+        MessageHandler(Filters.text & ~Filters.command, answer_questions)
+    )
     updater.start_polling()
     updater.idle()
-
-
-
-

@@ -8,21 +8,24 @@ from dotenv import load_dotenv
 from dialogflow_answer import detect_intent_texts
 
 
-
 def answer_questions(event, vk_api):
     project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
     language_code = 'ru-RU'
     user_id = event.user_id
     user_question = event.text
-    dialogflow_answer = detect_intent_texts(project_id, user_id, user_question, language_code)
-    vk_api.messages.send(
-        user_id=user_id,
-        message=dialogflow_answer,
-        random_id=random.randint(1,1000)
+    response = detect_intent_texts(
+        project_id, user_id,
+        user_question, language_code
     )
+    if not response.query_result.intent.is_fallback:
+        vk_api.messages.send(
+            user_id=user_id,
+            message=response.query_result.fulfillment_text,
+            random_id=random.randint(1, 1000)
+        )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     load_dotenv()
     vk_token = os.environ['VK_GROUP_TOKEN']
     vk_session = vk.VkApi(token=vk_token)

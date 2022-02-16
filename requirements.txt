@@ -1,3 +1,5 @@
 requests~=2.27.1
 python-dotenv~=0.19.2
 python-telegram-bot~=13.11
+google-cloud-dialogflow~=2.11
+vk-api~=11.9

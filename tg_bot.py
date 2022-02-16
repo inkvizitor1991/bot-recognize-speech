@@ -48,12 +48,17 @@ if __name__ == '__main__':
     load_dotenv()
     credentials_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
     bot_token = os.environ['TG_BOT_TOKEN']
-    updater = Updater(bot_token)
-    dispatcher = updater.dispatcher
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(
-        MessageHandler(Filters.text & ~Filters.command, answer_questions)
-    )
-    updater.start_polling()
-    updater.idle()
+    logging.basicConfig(level=logging.ERROR)
+    logger.setLevel(logging.DEBUG)
+    try:
+        updater = Updater(bot_token)
+        dispatcher = updater.dispatcher
+        dispatcher.add_handler(CommandHandler("start", start))
+        dispatcher.add_handler(CommandHandler("help", help_command))
+        dispatcher.add_handler(
+            MessageHandler(Filters.text & ~Filters.command, answer_questions)
+        )
+        updater.start_polling()
+        updater.idle()
+    except Exception as error:
+        logger.exception(error)

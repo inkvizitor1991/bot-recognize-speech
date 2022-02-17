@@ -1,8 +1,12 @@
 import os
 import json
+import logging
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+
+
+logger = logging.getLogger(__name__)
 
 
 def create_intent(project_id, display_name, training_phrases_parts, message_texts):
@@ -34,11 +38,14 @@ def open_training_phrase(training_phrase):
 
 
 if __name__ == '__main__':
-    training_phrase = 'training_phrase.txt'
+    training_phrase = 'phrase.txt'
     load_dotenv()
-    intents = open_training_phrase(training_phrase)
-    for intent in intents:
-        training_phrases = intents[intent]['questions']
-        message_answer = [intents[intent]['answer']]
-        project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
-        create_intent(project_id, intent, training_phrases, message_answer)
+    try:
+        intents = open_training_phrase(training_phrase)
+        for intent in intents:
+            training_phrases = intents[intent]['questions']
+            message_answer = [intents[intent]['answer']]
+            project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
+            create_intent(project_id, intent, training_phrases, message_answer)
+    except Exception as error:
+        logger.exception(error)

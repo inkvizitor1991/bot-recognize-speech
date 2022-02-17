@@ -144,5 +144,3 @@ cython_debug/
 test.py
 UNION.py
 service_account_file.json
-training_phrase.txt
-README

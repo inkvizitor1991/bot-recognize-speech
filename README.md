@@ -9,7 +9,7 @@
 Пример результата для Telegram: \
 ![alt text](gifs/demo_tg_bot.gif) \
 Пример результата для ВКонтакте: \
-![alt text](gifs/demo_vk_bot.gif) \
+![alt text](gifs/demo_vk_bot.gif)
 
 ### Как запустить
 Для запуска на своем компьютере вам потребуется:

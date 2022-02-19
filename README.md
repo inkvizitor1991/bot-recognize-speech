@@ -23,7 +23,7 @@ git clone https://github.com/inkvizitor1991/bot-recognize-speech.git
 ```
 pip install -r requirements.txt
 ``` 
-4. Добавить фразы для ботов (перед этим заполните `phrase.txt` своими данными): 
+4. Добавить фразы для ботов (перед этим заполните `phrase.json` своими данными):
 ```
 python training_phrase.py
 ```
@@ -39,7 +39,7 @@ python tg_bot.py
 Вы можете указать свой путь до JSON-файла с фразами: 
 - --json_path — указать свой путь к *.json файлу с данными.
 
-$ python library.py 20 30
+$ python phrase.py --json_path phrase.json
 
 ### Переменные окружения
 

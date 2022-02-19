@@ -23,8 +23,6 @@ def start(update: Update, context: CallbackContext):
     )
 
 
-def help_command(update: Update, context: CallbackContext):
-    update.message.reply_text('Help!')
 
 
 def answer_questions(update: Update, context: CallbackContext):
@@ -49,7 +47,6 @@ if __name__ == '__main__':
         updater = Updater(bot_token)
         dispatcher = updater.dispatcher
         dispatcher.add_handler(CommandHandler("start", start))
-        dispatcher.add_handler(CommandHandler("help", help_command))
         dispatcher.add_handler(
             MessageHandler(Filters.text & ~Filters.command, answer_questions)
         )

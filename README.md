@@ -39,7 +39,7 @@ python tg_bot.py
 Вы можете указать свой путь до JSON-файла с фразами: 
 - --json_path — указать свой путь к *.json файлу с данными.
 ```
-$ python phrase.py --json_path phrase.json`
+$ python phrase.py --json_path phrase.json
 ```
 ### Переменные окружения
 

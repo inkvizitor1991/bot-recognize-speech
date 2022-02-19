@@ -33,12 +33,11 @@ if __name__ == '__main__':
     vk_token = os.environ['VK_GROUP_TOKEN']
     logging.basicConfig(level=logging.ERROR)
     logger.setLevel(logging.DEBUG)
-    try:
-        vk_session = vk.VkApi(token=vk_token)
-        vk_api = vk_session.get_api()
-        longpoll = VkLongPoll(vk_session)
-        for event in longpoll.listen():
-            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                answer_questions(event, vk_api, language_code, project_id)
-    except Exception as error:
-        logger.exception(error)
+
+    vk_session = vk.VkApi(token=vk_token)
+    vk_api = vk_session.get_api()
+    longpoll = VkLongPoll(vk_session)
+    for event in longpoll.listen():
+        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+            answer_questions(event, vk_api, language_code, project_id)
+

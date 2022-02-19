@@ -40,12 +40,13 @@ def open_training_phrase(training_phrase):
 if __name__ == '__main__':
     training_phrase = 'phrase.txt'
     load_dotenv()
-    try:
-        intents = open_training_phrase(training_phrase)
-        for intent in intents:
-            training_phrases = intents[intent]['questions']
-            message_answer = [intents[intent]['answer']]
-            project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
-            create_intent(project_id, intent, training_phrases, message_answer)
-    except Exception as error:
-        logger.exception(error)
+    logging.basicConfig(level=logging.ERROR)
+    logger.setLevel(logging.DEBUG)
+
+    intents = open_training_phrase(training_phrase)
+    for intent in intents:
+        training_phrases = intents[intent]['questions']
+        message_answer = [intents[intent]['answer']]
+        project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
+        create_intent(project_id, intent, training_phrases, message_answer)
+

@@ -43,14 +43,13 @@ if __name__ == '__main__':
     bot_token = os.environ['TG_BOT_TOKEN']
     logging.basicConfig(level=logging.ERROR)
     logger.setLevel(logging.DEBUG)
-    try:
-        updater = Updater(bot_token)
-        dispatcher = updater.dispatcher
-        dispatcher.add_handler(CommandHandler("start", start))
-        dispatcher.add_handler(
-            MessageHandler(Filters.text & ~Filters.command, answer_questions)
-        )
-        updater.start_polling()
-        updater.idle()
-    except Exception as error:
-        logger.exception(error)
+
+    updater = Updater(bot_token)
+    dispatcher = updater.dispatcher
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(
+        MessageHandler(Filters.text & ~Filters.command, answer_questions)
+    )
+    updater.start_polling()
+    updater.idle()
+
